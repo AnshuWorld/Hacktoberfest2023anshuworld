@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+
+  <head>
+
+    <meta charset="utf-8">
+
+    <title>ToDo List</title>
+
+
+
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+
+    integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="
+
+    crossorigin="anonymous" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&display=swap" rel="stylesheet">
+   <style>
+       
+       *{
+
+  padding: 0;
+
+  margin: 0;
+
+  box-sizing: border-box;
+
+}
+
+body{
+
+  background: linear-gradient(to right, #b993d6, #8ca6db);
+
+  align-items: center;
+
+}
+
+main{
+
+  font-family: 'Oswald', sans-serif;
+
+  color: white;
+
+}
+
+
+
+h2, form{
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  padding: 20px;
+
+  margin: 10px;
+
+}
+
+form input , form button{
+
+  background-color: white;
+
+  border: none;
+
+  padding: 5px;
+
+  font-size: 20px;
+
+}
+
+form button{
+
+  background-color: white;
+
+  color: #FCA743;
+
+}
+
+form button:hover{
+
+  background-color: #FCA743;
+
+  color: white;
+
+  transition: all 0.5s ease;
+
+}
+
+form input{
+
+  min-width: 25%;
+
+}
+
+.todo-contaner{
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+}
+
+#todo-list{
+
+  list-style: none;
+
+  min-width:30%;
+
+}
+
+.todo{
+
+  color: black;
+
+  margin: 7px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  transition: all 0.9s ease;
+
+}
+
+.todo-item{
+
+  font-size: 20px;
+
+  flex: 1;
+
+  background-color: white;
+
+  padding: 5px;
+
+}
+
+.complete-btn, .trash-btn{
+
+  background-color: red;
+
+  color: white;
+
+  border: none;
+
+  padding: 8px;
+
+  margin: 5px;
+
+}
+
+.complete-btn{
+
+  background-color: green;
+
+}
+
+.trash-btn:hover{
+
+  background-color: white;
+
+  color: red;
+
+}
+
+.complete-btn:hover{
+
+  background-color: white;
+
+  color: green;
+
+}
+
+.fa-check, .fa-trash{
+
+  pointer-events: none;
+
+}
+
+.completed{
+
+  text-decoration: line-through;
+
+  opacity: 0.5;
+
+}
+
+.fall{
+
+  transform: translateY(8rem) rotateZ(20deg);
+
+  opacity: 0;
+
+}
+
+
+
+footer{
+
+  display: flex;
+
+  align-items: flex-end;
+
+  margin-top: 10%;
+
+  justify-content:center;
+
+}
+
+
+   </style>
+
+
+
+
+
+  </head>
+
+  <body>
+
+    <header>
+
+    </header>
+
+
+
+    <main>
+
+
+
+        <h2>My ToDo List</h2>
+
+
+
+        <form class="todo-form">
+
+          <input type="text" id ="todo-input">
+
+          <button type="button" id ="todo-button" onclick="addTodo()">
+
+            <i class="fas fa-plus-square"></i>
+
+          </button>
+
+        </form>
+
+
+
+        <div class="todo-contaner">
+
+          <ul id ="todo-list"></ul>
+
+        </div>
+
+
+
+    </main>
+
+
+
+   
+
+
+
+    <script>
+
+        
+
+const todoButton = document.getElementById('todo-button');
+
+const todoInput = document.getElementById('todo-input');
+
+const todoList = document.getElementById('todo-list')
+
+
+
+//Event Listeners
+
+  todoList.addEventListener('click', deleteCheck);
+
+
+
+//Functions
+
+function addTodo(event) {
+
+
+
+  if(todoInput.value === ""){
+
+    alert("Please type something to Add")
+
+  }else{
+
+
+
+  const todoDiv = document.createElement("div");
+
+  todoDiv.classList.add("todo");
+
+
+
+  const completeButton = document.createElement('button');
+
+  completeButton.innerHTML = '<i class="fas fa-check"></i>'
+
+  completeButton.classList.add("complete-btn");
+
+  todoDiv.appendChild(completeButton);
+
+
+
+  const newToDo = document.createElement('li');
+
+  newToDo.innerText = todoInput.value;
+
+  newToDo.classList.add('todo-item');
+
+  todoDiv.appendChild(newToDo);
+
+
+
+  const trashButton = document.createElement('button');
+
+  trashButton.innerHTML = '<i class="fas fa-trash"></i>'
+
+  trashButton.classList.add('trash-btn');
+
+  todoDiv.appendChild(trashButton);
+
+
+
+  todoList.appendChild(todoDiv);
+
+  todoInput.value = "";
+
+}
+
+}
+
+
+
+function deleteCheck(e) {
+
+  const item = e.target;
+
+  const todo = item.parentElement;
+
+
+
+  //Delete button
+
+  if(item.classList[0] === "trash-btn"){
+
+    todo.classList.add('fall')
+
+    todo.addEventListener("transitionend", function(){
+
+      todo.remove();
+
+    })
+
+  }
+
+  //Checked button
+
+  else if(item.classList[0] === "complete-btn"){
+
+    todo.classList.toggle("completed");
+
+  }
+
+}
+
+
+
+    </script>
+
+
+
+  </body>
+
+</html>
+
+  
